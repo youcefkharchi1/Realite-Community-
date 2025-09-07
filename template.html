@@ -1,83 +1,99 @@
-// saveTranscript.js
-const fs = require("fs");
-const path = require("path");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Transcript - {{CHANNEL_NAME}}</title>
+  <style>
+    body {
+      background-color: #36393f;
+      color: #dcddde;
+      font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #2f3136;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .header {
+      border-bottom: 1px solid #202225;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    .header h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #fff;
+    }
+    .header small {
+      color: #b9bbbe;
+    }
+    .message {
+      display: flex;
+      margin-bottom: 15px;
+      padding: 5px;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .message-body {
+      flex: 1;
+    }
+    .meta {
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+    .author {
+      font-weight: 600;
+      color: #fff;
+    }
+    .time {
+      margin-left: 6px;
+      font-size: 12px;
+      color: #72767d;
+    }
+    .content {
+      font-size: 15px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+    .att {
+      margin-top: 4px;
+    }
+    .att a {
+      color: #00aff4;
+      text-decoration: none;
+    }
+    .footer {
+      margin-top: 25px;
+      border-top: 1px solid #202225;
+      padding-top: 10px;
+      font-size: 12px;
+      color: #72767d;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>#{{CHANNEL_NAME}} — {{GUILD_NAME}}</h2>
+      <small>Opened by: {{OPENER}} | Generated at: {{GENERATED_AT}}</small>
+    </div>
 
-// نخلي مسار واحد للـ template داخل مجلد site
-const TEMPLATE_PATH = path.join(__dirname, "site", "template.html");
-const TRANSCRIPTS_PATH = process.env.TRANSCRIPTS_PATH || path.join(__dirname, "site", "transcripts");
-const GITHUB_PAGES_BASE = process.env.GITHUB_PAGES_BASE || "https://yourname.github.io/yourrepo/transcripts";
+    <div class="messages">
+      {{MESSAGES}}
+    </div>
 
-// نتأكد أن مجلد transcripts راهو موجود
-if (!fs.existsSync(TRANSCRIPTS_PATH)) {
-  fs.mkdirSync(TRANSCRIPTS_PATH, { recursive: true });
-}
-
-function escapeHtml(s) {
-  if (!s) return "";
-  return s.replace(/&/g,"&amp;")
-           .replace(/</g,"&lt;")
-           .replace(/>/g,"&gt;");
-}
-
-function buildTranscriptHTML(messages, channel, openerUser) {
-  const header = fs.readFileSync(TEMPLATE_PATH, "utf8");
-
-  const rows = messages.map(m => {
-    const time = new Date(m.createdTimestamp).toLocaleString();
-    const author = escapeHtml(m.author?.tag || m.author?.username || "Unknown");
-    const avatar = m.author?.displayAvatarURL?.() || "https://cdn.discordapp.com/embed/avatars/0.png";
-    const content = escapeHtml(m.cleanContent || m.content || "").replace(/\n/g, "<br>");
-    const attachments = m.attachments && m.attachments.size
-      ? Array.from(m.attachments.values())
-          .map(a => `<div class="att"><a href="${a.url}" target="_blank">${escapeHtml(a.name || a.url)}</a></div>`)
-          .join("")
-      : "";
-
-    return `
-    <div class="message">
-      <img class="avatar" src="${avatar}" alt="avatar">
-      <div class="message-body">
-        <div class="meta"><span class="author">${author}</span> <span class="time">${time}</span></div>
-        <div class="content">${content}</div>
-        ${attachments}
-      </div>
-    </div>`;
-  }).join("\n");
-
-  return header
-    .replace("{{CHANNEL_NAME}}", escapeHtml(channel.name))
-    .replace("{{GUILD_NAME}}", escapeHtml(channel.guild?.name || ""))
-    .replace("{{MESSAGES}}", rows)
-    .replace("{{GENERATED_AT}}", new Date().toLocaleString())
-    .replace("{{OPENER}}", escapeHtml(openerUser?.tag || "Unknown"));
-}
-
-async function saveTranscript(channel, openerUser, limit = 1000) {
-  let all = [];
-  let lastId = null;
-
-  while (true) {
-    const options = { limit: 100 };
-    if (lastId) options.before = lastId;
-
-    const fetched = await channel.messages.fetch(options);
-    if (!fetched || fetched.size === 0) break;
-
-    all.push(...Array.from(fetched.values()));
-    lastId = fetched.last().id;
-    if (all.length >= limit) break;
-  }
-
-  all = all.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
-
-  const html = buildTranscriptHTML(all, channel, openerUser);
-  const fileName = `${channel.id}.html`;
-  const filePath = path.join(TRANSCRIPTS_PATH, fileName);
-
-  fs.writeFileSync(filePath, html, "utf8");
-  const publicUrl = `${GITHUB_PAGES_BASE}/${fileName}`;
-
-  return { filePath, publicUrl };
-}
-
-module.exports = { saveTranscript };
+    <div class="footer">
+      Transcript generated automatically — looks like real Discord chat
+    </div>
+  </div>
+</body>
+</html>
