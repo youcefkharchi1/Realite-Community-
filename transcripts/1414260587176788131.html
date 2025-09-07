@@ -1,0 +1,523 @@
+// saveTranscript.js
+const fs = require("fs");
+const path = require("path");
+
+// نخلي مسار واحد للـ template داخل مجلد site
+const TEMPLATE_PATH = path.join(__dirname, "site", "template.html");
+const TRANSCRIPTS_PATH = process.env.TRANSCRIPTS_PATH || path.join(__dirname, "site", "transcripts");
+const GITHUB_PAGES_BASE = process.env.GITHUB_PAGES_BASE || "https://yourname.github.io/yourrepo/transcripts";
+
+// نتأكد أن مجلد transcripts راهو موجود
+if (!fs.existsSync(TRANSCRIPTS_PATH)) {
+  fs.mkdirSync(TRANSCRIPTS_PATH, { recursive: true });
+}
+
+function escapeHtml(s) {
+  if (!s) return "";
+  return s.replace(/&/g,"&amp;")
+           .replace(/</g,"&lt;")
+           .replace(/>/g,"&gt;");
+}
+
+function buildTranscriptHTML(messages, channel, openerUser) {
+  const header = fs.readFileSync(TEMPLATE_PATH, "utf8");
+
+  const rows = messages.map(m => {
+    const time = new Date(m.createdTimestamp).toLocaleString();
+    const author = escapeHtml(m.author?.tag || m.author?.username || "Unknown");
+    const avatar = m.author?.displayAvatarURL?.() || "https://cdn.discordapp.com/embed/avatars/0.png";
+    const content = escapeHtml(m.cleanContent || m.content || "").replace(/\n/g, "<br>");
+    const attachments = m.attachments && m.attachments.size
+      ? Array.from(m.attachments.values())
+          .map(a => `<div class="att"><a href="${a.url}" target="_blank">${escapeHtml(a.name || a.url)}</a></div>`)
+          .join("")
+      : "";
+
+    return `
+    <div class="message">
+      <img class="avatar" src="${avatar}" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">${author}</span> <span class="time">${time}</span></div>
+        <div class="content">${content}</div>
+        ${attachments}
+      </div>
+    </div>`;
+  }).join("\n");
+
+  return header
+    .replace("closed-2", escapeHtml(channel.name))
+    .replace("Dev TOUNI", escapeHtml(channel.guild?.name || ""))
+    .replace("
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/embed/avatars/2.png" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">𝓉𝓃 𝒹𝑒𝓋#5942</span> <span class="time">9/7/2025, 4:46:40 PM</span></div>
+        <div class="content">📢 @here @shop</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:45 PM</span></div>
+        <div class="content">s</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:45 PM</span></div>
+        <div class="content">dsds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:46 PM</span></div>
+        <div class="content">ds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:47 PM</span></div>
+        <div class="content">d</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:47 PM</span></div>
+        <div class="content">d</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:48 PM</span></div>
+        <div class="content">sd</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:48 PM</span></div>
+        <div class="content">dsssd</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:48 PM</span></div>
+        <div class="content">ds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:49 PM</span></div>
+        <div class="content">sd</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:49 PM</span></div>
+        <div class="content">s<br>d</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:49 PM</span></div>
+        <div class="content">ds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:50 PM</span></div>
+        <div class="content">ds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:50 PM</span></div>
+        <div class="content">ds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:51 PM</span></div>
+        <div class="content">sd</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:51 PM</span></div>
+        <div class="content">dsds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:52 PM</span></div>
+        <div class="content">d</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:52 PM</span></div>
+        <div class="content">dds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:52 PM</span></div>
+        <div class="content">ds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:53 PM</span></div>
+        <div class="content">dsd</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:53 PM</span></div>
+        <div class="content">d</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:54 PM</span></div>
+        <div class="content">d</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:54 PM</span></div>
+        <div class="content">dsd</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:55 PM</span></div>
+        <div class="content">sds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:55 PM</span></div>
+        <div class="content">ds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:55 PM</span></div>
+        <div class="content">sd<br>dd</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:56 PM</span></div>
+        <div class="content">sds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:56 PM</span></div>
+        <div class="content">d</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:57 PM</span></div>
+        <div class="content">ds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:57 PM</span></div>
+        <div class="content">dsds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:57 PM</span></div>
+        <div class="content">d</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:58 PM</span></div>
+        <div class="content">sdsd</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:58 PM</span></div>
+        <div class="content">dsds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:59 PM</span></div>
+        <div class="content">dsds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:59 PM</span></div>
+        <div class="content">ds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:46:59 PM</span></div>
+        <div class="content">ddd</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:47:00 PM</span></div>
+        <div class="content">sds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:47:00 PM</span></div>
+        <div class="content">ds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:47:02 PM</span></div>
+        <div class="content">dsds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:47:03 PM</span></div>
+        <div class="content">dd</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:47:06 PM</span></div>
+        <div class="content">sd</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:47:08 PM</span></div>
+        <div class="content">ds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:47:10 PM</span></div>
+        <div class="content">d</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:47:11 PM</span></div>
+        <div class="content">dds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:47:14 PM</span></div>
+        <div class="content">dsds</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:47:16 PM</span></div>
+        <div class="content">dssddss</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/embed/avatars/2.png" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">𝓉𝓃 𝒹𝑒𝓋#5942</span> <span class="time">9/7/2025, 4:47:16 PM</span></div>
+        <div class="content">**The ticket has been closed successfully. Please select to complete the process.**</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:47:18 PM</span></div>
+        <div class="content">dd</div>
+        
+      </div>
+    </div>
+
+    <div class="message">
+      <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+      <div class="message-body">
+        <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 4:47:19 PM</span></div>
+        <div class="content">d</div>
+        
+      </div>
+    </div>", rows)
+    .replace("9/7/2025, 4:47:20 PM", new Date().toLocaleString())
+    .replace("youzarsif_dev", escapeHtml(openerUser?.tag || "Unknown"));
+}
+
+async function saveTranscript(channel, openerUser, limit = 1000) {
+  let all = [];
+  let lastId = null;
+
+  while (true) {
+    const options = { limit: 100 };
+    if (lastId) options.before = lastId;
+
+    const fetched = await channel.messages.fetch(options);
+    if (!fetched || fetched.size === 0) break;
+
+    all.push(...Array.from(fetched.values()));
+    lastId = fetched.last().id;
+    if (all.length >= limit) break;
+  }
+
+  all = all.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+
+  const html = buildTranscriptHTML(all, channel, openerUser);
+  const fileName = `${channel.id}.html`;
+  const filePath = path.join(TRANSCRIPTS_PATH, fileName);
+
+  fs.writeFileSync(filePath, html, "utf8");
+  const publicUrl = `${GITHUB_PAGES_BASE}/${fileName}`;
+
+  return { filePath, publicUrl };
+}
+
+module.exports = { saveTranscript };
