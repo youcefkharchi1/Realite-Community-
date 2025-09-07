@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Closed - 1</title>
+
+  <!-- هنا يتلصق CSS من style.css -->
+  <style>
+/* General body */
+body {
+    background-color: #2C2F33;
+    color: #DCDDDE;
+    font-family: "gg sans", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Container for transcript */
+.container {
+    max-width: 900px;
+    width: 95%;
+    margin: auto;
+    padding: 20px;
+    background-color: #36393F;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* Header */
+.header {
+    border-bottom: 1px solid #202225;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.header h2 {
+    font-size: 22px;
+    margin: 5px 0;
+    color: #FFFFFF;
+}
+
+.header small {
+    font-size: 13px;
+    color: #B9BBBE;
+    display: block;
+}
+
+/* Individual message */
+.message {
+    display: flex;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background-color: #2F3136;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+/* Message body */
+.message-body {
+    flex: 1;
+}
+
+/* Meta (author + time) */
+.meta {
+    font-size: 13px;
+    margin-bottom: 3px;
+}
+
+.author {
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.time {
+    color: #72767D;
+    margin-left: 6px;
+    font-size: 12px;
+}
+
+/* Message content */
+.content {
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    color: #DCDDDE;
+}
+
+/* Attachments */
+.att {
+    margin-top: 6px;
+}
+
+.att a {
+    color: #00AFF4;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.att a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+    margin-top: 25px;
+    font-size: 12px;
+    color: #72767D;
+    border-top: 1px solid #202225;
+    padding-top: 10px;
+}
+
+/* Ticket Embed Box */
+.ticket-embed {
+    background: #2f3136;
+    border-left: 4px solid #ff0000;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* Ticket header */
+.ticket-embed .title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+/* Ticket content */
+.ticket-embed p {
+    margin: 6px 0;
+    font-size: 14px;
+    color: #dcddde;
+}
+
+.ticket-embed b {
+    color: #ffffff;
+}
+
+/* Ticket footer buttons */
+.ticket-footer {
+    margin-top: 15px;
+    display: flex;
+    gap: 8px;
+}
+
+/* Discord-like buttons */
+.ticket-footer .btn {
+    border: none;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    font-family: "gg sans", "Segoe UI", sans-serif;
+}
+
+.ticket-footer .btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.95);
+}
+
+/* Colors like Discord */
+.btn.green { background: #2ecc71; color: #fff; }   /* Success */
+.btn.red   { background: #ed4245; color: #fff; }   /* Danger */
+.btn.gray  { background: #4f545c; color: #fff; }   /* Secondary */
+.btn.blue  { background: #5865f2; color: #fff; }   /* Primary */
+
+/* Responsive adjustments for mobile */
+@media only screen and (max-width: 600px) {
+    .container { padding: 10px; width: 98%; box-shadow: none; }
+    .message { flex-direction: column; padding: 8px; }
+    .avatar { width: 35px; height: 35px; margin-bottom: 6px; }
+    .ticket-embed { padding: 10px; margin: 15px 0; box-shadow: none; }
+    .ticket-footer { flex-direction: column; }
+    .ticket-footer .btn { padding: 6px 10px; font-size: 12px; width: 100%; }
+}
+
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img class="server-icon" src="https://cdn.discordapp.com/icons/1271588005357944843/fe381fa18b7768203e3ab520a100cff1.webp" alt="Server Icon">
+      <h2>{{TICKET_TITLE}}</h2>
+      <small>Dev TOUNI — Opened by: youzarsif_dev | Generated at: 9/7/2025, 9:42:30 PM</small>
+    </div>
+
+    <div class="messages">
+      <div class="message">
+        <img class="avatar" src="https://cdn.discordapp.com/embed/avatars/2.png" alt="avatar">
+        <div class="message-body">
+          <div class="meta"><span class="author">𝓉𝓃 𝒹𝑒𝓋#5942</span> <span class="time">9/7/2025, 9:41:12 PM</span></div>
+          <div class="content">📢 <span class="mention everyone">@here</span> @shop</div>
+          
+          <div class="ticket-embed"><div class="title">📌 New Ticket - 𝐒𝐞𝐥𝐥 𝐀𝐜𝐜𝐞𝐧𝐭</div><div class="desc">**Ticket from &lt;@987274731818483712&gt;**</div><div class="field"><span class="field-name">ما هو اسمك الكامل:</span> <span class="field-value">fdfddfdf</span></div><div class="field"><span class="field-name">ما نوع الحساب الذي تريده ؟:</span> <span class="field-value">ffdddffd</span></div><div class="ticket-footer">
+      <button class="btn green">Claim</button>
+      <button class="btn red">Close</button>
+      <button class="btn gray">Delete</button>
+      <button class="btn blue">Open</button>
+    </div></div>
+        </div>
+      </div>
+<div class="message">
+        <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+        <div class="message-body">
+          <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 9:42:22 PM</span></div>
+          <div class="content">ds</div>
+          
+          
+        </div>
+      </div>
+<div class="message">
+        <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+        <div class="message-body">
+          <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 9:42:23 PM</span></div>
+          <div class="content">ds</div>
+          
+          
+        </div>
+      </div>
+<div class="message">
+        <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+        <div class="message-body">
+          <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 9:42:23 PM</span></div>
+          <div class="content">sd</div>
+          
+          
+        </div>
+      </div>
+<div class="message">
+        <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+        <div class="message-body">
+          <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 9:42:24 PM</span></div>
+          <div class="content">s</div>
+          
+          
+        </div>
+      </div>
+<div class="message">
+        <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+        <div class="message-body">
+          <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 9:42:24 PM</span></div>
+          <div class="content">sd</div>
+          
+          
+        </div>
+      </div>
+<div class="message">
+        <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+        <div class="message-body">
+          <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 9:42:25 PM</span></div>
+          <div class="content">sd</div>
+          
+          
+        </div>
+      </div>
+<div class="message">
+        <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+        <div class="message-body">
+          <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 9:42:25 PM</span></div>
+          <div class="content">sdsd</div>
+          
+          
+        </div>
+      </div>
+<div class="message">
+        <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+        <div class="message-body">
+          <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 9:42:26 PM</span></div>
+          <div class="content">sd</div>
+          
+          
+        </div>
+      </div>
+<div class="message">
+        <img class="avatar" src="https://cdn.discordapp.com/avatars/987274731818483712/f7d3f661ded09c5472f92710986a7ff4.webp" alt="avatar">
+        <div class="message-body">
+          <div class="meta"><span class="author">youzarsif_dev</span> <span class="time">9/7/2025, 9:42:26 PM</span></div>
+          <div class="content">sd</div>
+          
+          
+        </div>
+      </div>
+<div class="message">
+        <img class="avatar" src="https://cdn.discordapp.com/embed/avatars/2.png" alt="avatar">
+        <div class="message-body">
+          <div class="meta"><span class="author">𝓉𝓃 𝒹𝑒𝓋#5942</span> <span class="time">9/7/2025, 9:42:27 PM</span></div>
+          <div class="content">**The ticket has been closed successfully. Please select to complete the process.**</div>
+          
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Transcript generated automatically — Discord style
+    </div>
+  </div>
+</body>
+</html>
