@@ -1,13 +1,88 @@
-/* تذكرة حقيقية style */
-.ticket {
+/* === Reset & Body === */
+body {
+  background: #0d1117;
+  color: #e6edf3;
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header, footer {
   background: #161b22;
-  border: 1px solid #30363d;
-  border-left: 5px solid #58a6ff; /* خط جانبي يبين التذكرة */
-  padding: 15px 20px;
-  border-radius: 10px;
+  padding: 10px 20px;
+  border-bottom: 1px solid #30363d;
+}
+
+h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+main {
+  padding: 20px;
+}
+
+/* === Messages === */
+.message {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.message img.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.message-body {
+  background: #21262d;
+  padding: 10px;
+  border-radius: 8px;
+  max-width: 700px;
+}
+
+.message-body .meta {
+  font-size: 12px;
+  color: #8b949e;
+  margin-bottom: 5px;
+}
+
+.message-body .author {
+  font-weight: bold;
+  color: #58a6ff;
+}
+
+.message-body .time {
+  margin-left: 10px;
+}
+
+.message-body .content {
+  white-space: pre-wrap;
+}
+
+.att {
+  margin-top: 5px;
+}
+
+.att a {
+  color: #79c0ff;
+  text-decoration: none;
+}
+.att a:hover {
+  text-decoration: underline;
+}
+
+/* === Ticket (realistic Discord style) === */
+.ticket {
+  background: #2f3136;
+  border-left: 4px solid #7289da;
+  border-radius: 8px;
+  padding: 12px 16px;
   max-width: 700px;
   margin-bottom: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .ticket .ticket-header {
@@ -18,40 +93,59 @@
 }
 
 .ticket .ticket-header .title {
-  font-size: 16px;
-  font-weight: bold;
-  color: #58a6ff;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 14px;
 }
 
 .ticket .ticket-header .status {
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 600;
   padding: 2px 8px;
   border-radius: 12px;
   color: #fff;
-  background-color: #2ea043; /* أخضر = مفتوحة */
+}
+
+.ticket .ticket-header .status.open {
+  background-color: #43b581; /* أخضر */
+}
+.ticket .ticket-header .status.closed {
+  background-color: #f04747; /* أحمر */
 }
 
 .ticket .ticket-body {
   font-size: 14px;
-  color: #c9d1d9;
+  color: #dcddde;
   white-space: pre-wrap;
 }
 
-.ticket .attachments {
+.ticket .buttons {
   margin-top: 10px;
+  display: flex;
+  gap: 6px;
 }
 
-.ticket .attachments a {
-  display: inline-block;
-  background: #21262d;
-  color: #79c0ff;
-  padding: 5px 10px;
-  margin-right: 5px;
-  border-radius: 5px;
-  text-decoration: none;
+.ticket .button {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  user-select: none;
+  font-size: 12px;
 }
 
-.ticket .attachments a:hover {
-  background: #30363d;
-}
+/* Buttons Colors */
+.ticket .button.green { background:#43b581; color:#fff; }  /* Claim */
+.ticket .button.green:hover { background:#3da46c; }
+
+.ticket .button.red { background:#f04747; color:#fff; }    /* Close */
+.ticket .button.red:hover { background:#d53e3e; }
+
+.ticket .button.blue { background:#7289da; color:#fff; }   /* Open */
+.ticket .button.blue:hover { background:#5b6eae; }
+
+.ticket .button.grey { background:#747f8d; color:#fff; }   /* Delete */
+.ticket .button.grey:hover { background:#5c6670; }
